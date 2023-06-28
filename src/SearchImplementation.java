@@ -16,24 +16,15 @@ public class SearchImplementation {
 		cli.prompt("Enter the search key: ");
 		int key = cli.getKeyboardInteger();
 		
-		long startTime;
-		int index;
-		long endTime;
-		
-	
+		int index = -1;
 
-
-		// Throwaway Linear Search
-		int[] v = Arrays.copyOf(values, values.length);
-		index = optimizedLinearSearch(v,key);
-		
 		// Optimized Linear Search
+	
 		int[] x = Arrays.copyOf(values, values.length);
-		startTime = System.nanoTime();
 		index = optimizedLinearSearch(x, key);
-		endTime = System.nanoTime();
+
 		
-		System.out.println("\nOptimized Linear Search - elapsed time: " + (endTime-startTime) + " ns");
+		System.out.println("\nOptimized Linear Search");
 		if (index >= 0) {
 			System.out.println("Search key FOUND at index " + index);
 		}else {
@@ -41,11 +32,9 @@ public class SearchImplementation {
 		}
 		
 		// Linear Search
-		startTime = System.nanoTime();
+
 		index = linearSearch(values, key);
-		endTime = System.nanoTime();
-		
-		System.out.println("\nLinear Search - elapsed time: " + (endTime-startTime) + " ns");
+		System.out.println("\nLinear Search");
 		if (index >= 0) {
 			System.out.println("Search key FOUND at index " + index);
 		}else {
@@ -55,17 +44,17 @@ public class SearchImplementation {
 		// Interpolation Search
 		bubbleSort(values);
 		
-		startTime = System.nanoTime();
+
 		index = interpolationSearch(values, key);
-		endTime = System.nanoTime();
-		
-		System.out.println("\nInterpolation Search - elapsed time: " + (endTime-startTime) + " ns");
+
+		System.out.println("\nInterpolation Search");
 		if (index >= 0) {
 			System.out.println("Search key FOUND at index " + index);
 		}else {
 			System.out.println("Search key NOT FOUND.");
 		}
 		
+		performanceTest(values, key);
 	}
 	
 	public static int linearSearch(int[] values, int key) {
@@ -113,6 +102,9 @@ public class SearchImplementation {
 		
 		while (low <= high) {
 			pos = (double)(key - values[low])/(double)(values[high] - values[low]);
+			if (pos>1) {
+				pos = 1;
+			}
 			mid = low + (int)Math.ceil(((high-low)*pos));
 			
 			if (key < values[mid]) {
@@ -120,7 +112,7 @@ public class SearchImplementation {
 			} else if (key > values[mid]) {
 				low = mid+1;
 			} else {
-				return values[mid];
+				return mid;
 			}
 		}
 		
@@ -138,4 +130,53 @@ public class SearchImplementation {
 			}
 		}
 	}
+	
+	public static void performanceTest(int[] values, int key) {
+		long startTime;
+		int index = -1;
+		long endTime;
+		long sum = 0;
+		
+		// Optimized Linear Search
+		for (int i=0; i<100; i++) {
+			int[] x = Arrays.copyOf(values, values.length);
+			startTime = System.nanoTime();
+			index = optimizedLinearSearch(x, key);
+			endTime = System.nanoTime();
+			sum += endTime-startTime;
+		}
+		sum = sum/100;
+		
+		System.out.println("\nOptimized Linear Search - Average runtime: " + (sum) + " ns");
+		
+		// Linear Search
+		sum = 0;
+		for (int i=0; i<100; i++) {
+
+			startTime = System.nanoTime();
+			index = linearSearch(values, key);
+			endTime = System.nanoTime();
+			sum += endTime-startTime;
+		}
+		sum = sum / 100;
+		
+		System.out.println("\nLinear Search - Average runtime: " + (sum) + " ns");
+		
+		
+		// Interpolation Search
+		bubbleSort(values);
+		
+		sum = 0;
+		for(int i=0; i<100; i++) {
+			startTime = System.nanoTime();
+			index = interpolationSearch(values, key);
+			endTime = System.nanoTime();
+			sum += endTime-startTime;
+		}
+		
+		sum = sum/100;
+		
+		System.out.println("\nInterpolation Search Average runtime: " + (sum) + " ns");
+		}
 }
+
