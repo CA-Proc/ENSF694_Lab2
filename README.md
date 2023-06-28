@@ -7,4 +7,4 @@ Code is contained in the github src folder. Run the main method in SearchImpleme
 
 Question 2:
 
-For small arrays, linear search had a much shorter run time for small 10-element arrays (6000 ns) versus the interpolation search (300,000ns) 
+Linear search had a much shorter run time for small 10-element arrays (6000 ns) versus the interpolation search (300,000ns). This is due to the high overhead of the Math.ceil() function dominating the runtime for the interpolation search. 

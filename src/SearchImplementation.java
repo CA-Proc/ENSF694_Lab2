@@ -16,22 +16,21 @@ public class SearchImplementation {
 		cli.prompt("Enter the search key: ");
 		int key = cli.getKeyboardInteger();
 		
-		// Linear Search
-		long startTime = System.nanoTime();
-		int index = linearSearch(values, key);
-		long endTime = System.nanoTime();
+		long startTime;
+		int index;
+		long endTime;
 		
-		System.out.println("\nLinear Search - elapsed time: " + (endTime-startTime) + " ns");
-		if (index >= 0) {
-			System.out.println("Search key FOUND at index " + index);
-		}else {
-			System.out.println("Search key NOT FOUND.");
-		}
+	
 
-		// Optimized Linear Search
+
+		// Throwaway Linear Search
 		int[] v = Arrays.copyOf(values, values.length);
+		index = optimizedLinearSearch(v,key);
+		
+		// Optimized Linear Search
+		int[] x = Arrays.copyOf(values, values.length);
 		startTime = System.nanoTime();
-		index = optimizedLinearSearch(v, key);
+		index = optimizedLinearSearch(x, key);
 		endTime = System.nanoTime();
 		
 		System.out.println("\nOptimized Linear Search - elapsed time: " + (endTime-startTime) + " ns");
@@ -41,6 +40,17 @@ public class SearchImplementation {
 			System.out.println("Search key NOT FOUND.");
 		}
 		
+		// Linear Search
+		startTime = System.nanoTime();
+		index = linearSearch(values, key);
+		endTime = System.nanoTime();
+		
+		System.out.println("\nLinear Search - elapsed time: " + (endTime-startTime) + " ns");
+		if (index >= 0) {
+			System.out.println("Search key FOUND at index " + index);
+		}else {
+			System.out.println("Search key NOT FOUND.");
+		}
 		
 		// Interpolation Search
 		bubbleSort(values);
