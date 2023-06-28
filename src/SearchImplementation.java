@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class SearchImplementation {
 
@@ -28,8 +29,9 @@ public class SearchImplementation {
 		}
 
 		// Optimized Linear Search
+		int[] v = Arrays.copyOf(values, values.length);
 		startTime = System.nanoTime();
-		index = optimizedLinearSearch(values, key);
+		index = optimizedLinearSearch(v, key);
 		endTime = System.nanoTime();
 		
 		System.out.println("\nOptimized Linear Search - elapsed time: " + (endTime-startTime) + " ns");
@@ -66,19 +68,22 @@ public class SearchImplementation {
 		return -1;
 	}
 	
-	public static int optimizedLinearSearch(int[] values, int key) {
-		if (values[values.length - 1]==key) {
-			return (values.length - 1);
+	public static int optimizedLinearSearch(int[] v, int key) {
+		
+		// Check if key is last element, if not, replace element with the key.
+		if (v[v.length - 1]==key) {
+			return (v.length - 1);
 		}else {
-			values[values.length-1] = key;
+			v[v.length-1] = key;
 		}
 		
+		// Search through the array - will no longer do a comparison 
 		int i=0;
-		while (values[i] != key) {
+		while (v[i] != key) {
 			i++;
 		}
 		
-		if (i==values.length-1) {
+		if (i==v.length-1) {
 			return -1;
 		}else {
 			return i;
@@ -97,7 +102,7 @@ public class SearchImplementation {
 		}
 		
 		while (low <= high) {
-			pos = (key - values[low])/(values[high] - values[low]);
+			pos = (double)(key - values[low])/(double)(values[high] - values[low]);
 			mid = low + (int)Math.ceil(((high-low)*pos));
 			
 			if (key < values[mid]) {
